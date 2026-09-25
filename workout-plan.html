@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Training Plan">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACSUlEQVR4nO3dsU4CQRRAUTFWa+MX+fF+kY29naHwCjuzmSXmnBqYzctlCIHMXrZte4LfPJ99ATwucZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIH6eWoF/r8eP37AW/vX0etxZppX+bvmnDzQq9JZNLKac9+rOy61oHHc23xtKfiGFtbH2PWT3s8jplV9bHXKdP2bYU0GMf8W9/mcb+zpm3nIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA7SYacJDnBEx4Ozc5DEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQTrzJ3v3e7vTWf9tsHOQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB2kwjvmjNRzOcb+zpm3nII3HMZOzbWOvU6Y9tXOMraqMMeunPfuxsndtZcxYPO3Ltm0zz/9x81AzWRxozbQPi4P/x7cVkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iB9AyzXSKAfL4BnAAAAAElFTkSuQmCC">
+<title>Training Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;background:#0a0a0a;color:#e2e8f0;font-family:'DM Mono','Courier New',monospace;overflow:hidden}
+  #app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+  #header{background:#0f0f0f;border-bottom:1px solid #1a1a1a;padding:16px 16px 12px;flex-shrink:0;padding-top:max(16px,env(safe-area-inset-top))}
+  #header h1{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.08em;color:#f8fafc;line-height:1}
+  #header p{font-size:10px;color:#475569;margin-top:3px;letter-spacing:.05em}
+  #tabs{display:flex;gap:6px;margin-top:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  #tabs::-webkit-scrollbar{display:none}
+  .tab-btn{background:transparent;border:1px solid #222;color:#64748b;cursor:pointer;font-family:'Bebas Neue',sans-serif;letter-spacing:.08em;font-size:11px;padding:6px 12px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+  .tab-btn.active{background:#1a1a1a;border-color:#facc15;color:#facc15}
+  #day-bar{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:10px;border-bottom:1px solid #1a1a1a;flex-shrink:0}
+  .day-btn{background:#111;border:1px solid #222;color:#64748b;cursor:pointer;font-family:'Bebas Neue',sans-serif;letter-spacing:.04em;font-size:13px;padding:8px 2px;border-radius:5px;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .day-btn.active{background:#1a1a1a;border-color:#555;color:#e2e8f0}
+  .day-dot{width:4px;height:4px;border-radius:50%;background:transparent}
+  .day-btn.active .day-dot{background:var(--dot-color)}
+  #content{flex:1;overflow-y:auto;padding:14px;padding-bottom:max(14px,env(safe-area-inset-bottom))}
+  #content::-webkit-scrollbar{width:3px}
+  #content::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+  .day-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .day-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.06em;color:#f8fafc;line-height:1}
+  .day-sub{font-size:10px;color:#475569;margin-top:2px}
+  .day-tag{padding:4px 10px;border-radius:20px;font-size:10px;font-family:'Bebas Neue',sans-serif;letter-spacing:.1em}
+  .section{background:#111;border:1px solid #1e1e1e;border-radius:8px;padding:14px;margin-bottom:10px}
+  .section-title{font-family:'Bebas Neue',sans-serif;letter-spacing:.1em;font-size:10px;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid #1e1e1e}
+  .item{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid #1a1a1a;font-size:12px;line-height:1.5}
+  .item:last-child{border-bottom:none;padding-bottom:0}
+  .dot{width:5px;height:5px;border-radius:50%;margin-top:6px;flex-shrink:0}
+  .note{background:#111;border-left:3px solid #facc15;padding:9px 12px;font-size:11px;color:#94a3b8;border-radius:0 5px 5px 0;margin-top:2px;line-height:1.6}
+  .note strong{color:#facc15}
+  .exercise-row{display:flex;flex-direction:column;gap:6px;padding:8px 0;border-bottom:1px solid #1a1a1a}
+  .exercise-row:last-child{border-bottom:none}
+  .exercise-name{font-size:12px;color:#cbd5e1;line-height:1.4}
+  .exercise-inputs{display:flex;gap:6px;margin-top:4px}
+  .ex-input{flex:1;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:5px;padding:7px 8px;color:#e2e8f0;font-family:'DM Mono','Courier New',monospace;font-size:12px;text-align:center;outline:none;-webkit-appearance:none}
+  .ex-input:focus{border-color:#facc15}
+  .ex-input::placeholder{color:#334155}
+  .ex-label{font-size:9px;color:#475569;font-family:'Bebas Neue',sans-serif;letter-spacing:.08em;text-align:center;margin-top:2px}
+  .input-group{display:flex;flex-direction:column;flex:1}
+  .guide-table{background:#111;border:1px solid #1e1e1e;border-radius:8px;padding:14px;margin-bottom:10px}
+  .guide-header{display:grid;grid-template-columns:24px 1fr;gap:8px;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #222}
+  .guide-header span{font-size:9px;color:#475569;font-family:'Bebas Neue',sans-serif;letter-spacing:.1em}
+  .guide-row{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #1a1a1a;font-size:11px;align-items:start}
+  .guide-row:last-child{border-bottom:none}
+  .guide-num{color:#facc15;font-family:'Bebas Neue',sans-serif;font-size:13px}
+  .guide-ex{color:#e2e8f0}
+  .guide-why{color:#64748b}
+  .info-card{background:#0f0f0f;border:1px solid #1e1e1e;border-radius:8px;padding:14px;margin-bottom:10px}
+  .info-card-title{font-family:'Bebas Neue',sans-serif;letter-spacing:.1em;font-size:10px;margin-bottom:10px}
+  .info-item{margin-bottom:10px}
+  .info-item-title{color:#94a3b8;font-size:10px;font-family:'Bebas Neue',sans-serif;letter-spacing:.08em;margin-bottom:2px}
+  .info-item-desc{color:#64748b;font-size:11px;line-height:1.6}
+  .rules-card{background:#110a00;border:1px solid #f8717133;border-radius:8px;padding:14px}
+  .rules-title{font-family:'Bebas Neue',sans-serif;letter-spacing:.1em;font-size:10px;color:#f87171;margin-bottom:10px}
+  .page-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em;margin-bottom:4px}
+  .page-sub{font-size:10px;color:#475569;margin-bottom:14px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="header">
+    <h1>TRAINING PLAN</h1>
+    <p>UPPER ×2 · LOWER ×2 · ARMS/FOREARMS ×1 · REST ×2</p>
+  </div>
+  <div id="day-bar"></div>
+  <div id="content"></div>
+</div>
+
+<script>
+const ACTIVE_RECOVERY_STRETCHES = [
+  "Pike — 3×60s",
+  "Pancake — 3×60s",
+  "Front split — 3×30s each",
+  "Kneeling hip flexor stretch — 2×60s each side",
+  "Side split — 3×45s",
+  "Pigeon — 2×90s each side",
+];
+
+const WEEKDAYS = ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"];
+
+const days = [
+  {
+    label:"Upper A — Push/Row", tag:"MON", tagColor:"#4ade80", tagBg:"#052e16",
+    sections:[
+      {title:"LIFTING — 8 MOVEMENTS", color:"#4ade80", trackable:true, items:[
+        "Incline bench press — 3×8-10 — rest 2 min",
+        "Chest press machine — 3×10-12 — rest 90s",
+        "Lat pulldown — 3×10 — rest 90s",
+        "Chest supported row — 3×12 (full scapular retraction) — rest 90s",
+        "Shoulder press machine — 2×10-12 — rest 90s",
+        "Lateral raise — 3×12-15 — rest 60s",
+        "Face pulls — 3×15 (elbows high) — rest 60s",
+        "Tricep pushdown — 2×12-15 — rest 60s",
+      ]},
+    ],
+    note:"Chest gets a compound + machine, back gets pulled + rowed same day so nothing's neglected. Face pulls every upper day for shoulder health — non-negotiable."
+  },
+  {
+    label:"Rest Day", tag:"TUE", tagColor:"#94a3b8", tagBg:"#1e293b",
+    sections:[
+      {title:"RECOVERY FOCUS", color:"#f87171", trackable:false, items:[
+        "Hit your protein target — dining hall runs count",
+        "Sleep 7-9 hrs, this is when the muscle actually builds",
+        "Hydrate — helps with soreness and digestion",
+        "Light walk if you feel like moving, totally optional",
+      ]},
+    ],
+    note:"Rest days are part of the muscle-building process, not time off from it — this is where the growth actually happens."
+  },
+  {
+    label:"Lower A", tag:"WED", tagColor:"#a78bfa", tagBg:"#1a0a2e",
+    sections:[
+      {title:"LIFTING — LOWER A", color:"#a78bfa", trackable:true, items:[
+        "Leg press machine — 3×10-12 — rest 2 min",
+        "Single leg RDL — 3×10 each side (balance + hamstring/glute) — rest 90s",
+        "Bulgarian split squat — 2×10 each side (unilateral stability) — rest 90s",
+        "Calf raise — 2×15-20 — rest 45-60s",
+        "Leg extension isometric hold — 3×30-45s (knee stability) — rest 60s",
+        "Leg raises — 2×12-15 (hip flexor/core) — rest 45s",
+      ]},
+    ],
+    note:"Dropped the dynamic isolation extension/curl work since you're not training legs for size — this is just enough press + hinge + unilateral work to keep your legs strong and stable. Isometric hold added back in for knee joint stability, not size."
+  },
+  {
+    label:"Upper B — Pull/Fly", tag:"THU", tagColor:"#4ade80", tagBg:"#052e16",
+    sections:[
+      {title:"LIFTING — 8 MOVEMENTS", color:"#4ade80", trackable:true, items:[
+        "Lat pulldown — 3×10 (wide grip) — rest 90s",
+        "Chest supported row — 3×12 — rest 90s",
+        "Face pulls — 2×15 (elbows high) — rest 60s",
+        "Chest fly — 3×12-15 — rest 60s",
+        "Rear delt fly — 2×15 — rest 60s",
+        "Barbell curl — 3×10 — rest 60s",
+        "Hammer curl — 2×12 (forearm/brachialis) — rest 60s",
+        "Tricep pushdown — 2×12-15 — rest 60s",
+      ]},
+    ],
+    note:"Second upper day leans on the fly + rear delt fly for shape (upper chest and rear delts respond well to isolation), plus a second arm hit since that's the aesthetic priority."
+  },
+  {
+    label:"Lower B", tag:"FRI", tagColor:"#a78bfa", tagBg:"#1a0a2e",
+    sections:[
+      {title:"LIFTING — LOWER B", color:"#a78bfa", trackable:true, items:[
+        "Leg press machine — 2×12 — rest 2 min",
+        "Bulgarian split squat — 3×10 each side — rest 90s",
+        "Single leg RDL — 3×10 each side — rest 90s",
+        "Calf raise — 2×15-20 — rest 45-60s",
+        "Leg extension isometric hold — 3×30-45s (knee stability) — rest 60s",
+        "Leg raises — 2×12-15 — rest 45s",
+      ]},
+    ],
+    note:"Same functional-only approach as Lower A, order flipped so split squat/RDL lead while you're freshest — keeps legs capable without chasing size."
+  },
+  {
+    label:"Arms, Shoulders & Forearms", tag:"SAT", tagColor:"#fb923c", tagBg:"#1c0a00",
+    sections:[
+      {title:"LIFTING — 8 MOVEMENTS", color:"#fb923c", trackable:true, items:[
+        "Shoulder press machine — 3×10 — rest 90s",
+        "Lateral raise — 3×15 — rest 60s",
+        "Preacher curl — 3×10 — rest 60s",
+        "Reverse barbell curl — 2×12 (forearm extensors) — rest 60s",
+        "Hammer curl — 2×12 (brachioradialis) — rest 60s",
+        "Tricep pushdown — 3×12-15 — rest 60s",
+        "Wrist curl — 2×15-20 (forearm flexors) — rest 45s",
+        "Reverse wrist curl — 2×15-20 (forearm extensors) — rest 45s",
+      ]},
+    ],
+    note:"This is the forearm-specialization day: reverse curl, hammer curl, and both wrist curl directions all directly target forearm size, on top of shoulders and a second full arm session for the week. Swap to Sunday if that fits your week better — just don't do both."
+  },
+  {
+    label:"Rest / Off", tag:"SUN", tagColor:"#94a3b8", tagBg:"#1e293b",
+    sections:[
+      {title:"RECOVERY FOCUS", color:"#f87171", trackable:false, items:[
+        "Hit your protein target — dining hall runs count",
+        "Sleep 7-9 hrs, this is when the muscle actually builds",
+        "Hydrate — helps with soreness and digestion",
+        "Light walk if you feel like moving, totally optional",
+      ]},
+    ],
+    note:"Full rest — no training, no PT, just eat well and recover into next Monday."
+  },
+];
+
+let currentTab = 'plan';
+let currentDay = 0;
+
+function saveInput(key, value) {
+  try { localStorage.setItem(key, value); } catch(e) {}
+}
+function loadInput(key) {
+  try { return localStorage.getItem(key) || ''; } catch(e) { return ''; }
+}
+function itemsHTML(items, color) {
+  return items.map(it => `<div class="item"><div class="dot" style="background:${color}"></div><span style="color:#cbd5e1">${it}</span></div>`).join('');
+}
+function trackableHTML(items, color, dayIdx, sectionIdx) {
+  return items.map((item, i) => {
+    const wKey = `d${dayIdx}_s${sectionIdx}_ex${i}_w`;
+    const rKey = `d${dayIdx}_s${sectionIdx}_ex${i}_r`;
+    return `<div class="exercise-row">
+      <div class="exercise-name"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${color};margin-right:8px;margin-bottom:1px;vertical-align:middle"></span>${item}</div>
+      <div class="exercise-inputs">
+        <div class="input-group">
+          <input class="ex-input" type="number" placeholder="lbs" value="${loadInput(wKey)}" oninput="saveInput('${wKey}',this.value)" inputmode="decimal">
+          <div class="ex-label">WEIGHT</div>
+        </div>
+        <div class="input-group">
+          <input class="ex-input" type="text" placeholder="reps" value="${loadInput(rKey)}" oninput="saveInput('${rKey}',this.value)" inputmode="text">
+          <div class="ex-label">REPS/SETS</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setDay(i) {
+  currentDay = i;
+  document.querySelectorAll('.day-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  render();
+}
+function renderPlan() {
+  const d = days[currentDay];
+
+  const mainSections = d.sections.map((s,si) => `<div class="section">
+    <div class="section-title" style="color:${s.color}">${s.title}</div>
+    ${s.trackable ? trackableHTML(s.items,s.color,currentDay,si) : itemsHTML(s.items,s.color)}
+  </div>`).join('');
+
+  return `<div class="day-header">
+    <div>
+      <div class="day-title">${d.label}</div>
+      <div class="day-sub">${WEEKDAYS[currentDay]}</div>
+    </div>
+    <div class="day-tag" style="background:${d.tagBg};border:1px solid ${d.tagColor}33;color:${d.tagColor}">${d.tag}</div>
+  </div>
+  ${mainSections}`;
+}
+
+function render() {
+  const c = document.getElementById('content');
+  c.scrollTop = 0;
+  c.innerHTML = renderPlan();
+}
+
+const bar = document.getElementById('day-bar');
+days.forEach((d,i) => {
+  const btn = document.createElement('button');
+  btn.className = 'day-btn'+(i===0?' active':'');
+  btn.style.setProperty('--dot-color', d.tagColor);
+  btn.innerHTML = `${WEEKDAYS[i].slice(0,3)}<span class="day-dot"></span>`;
+  btn.onclick = () => setDay(i);
+  bar.appendChild(btn);
+});
+
+render();
+</script>
+</body>
+</html>
